@@ -12,6 +12,8 @@ build/
 bin/
 target/
 
+# Pictures
+*.jpg
 
 # BlueJ files
 *.ctxt
