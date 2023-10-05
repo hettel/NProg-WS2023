@@ -1,6 +1,8 @@
 package playground;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParallelPrim
 {
@@ -30,25 +32,35 @@ public class ParallelPrim
     public static void main(String[] args) throws InterruptedException
     {
         long startTime = System.currentTimeMillis();
-        Task task1 = new Task(1_000_000, 1_250_000);
-        Task task2 = new Task(1_250_000, 1_500_000);
-        Task task3 = new Task(1_500_000, 1_750_000);
-        Task task4 = new Task(1_750_000, 2_000_000);
 
-        Thread thread1 = new Thread( task1, "Worker1");
-        Thread thread2 = new Thread( task2, "Worker2");
-        Thread thread3 = new Thread( task3, "Worker3");
-        Thread thread4 = new Thread( task4, "Worker4");
+        int numProc = Runtime.getRuntime().availableProcessors();
+        int startRange = 1_000_000;
+        int endRange = 2_000_000;
 
-        thread1.start();
-        thread2.start();
-        thread3.start();
-        thread4.start();
+        int chunkSize = (endRange - startRange)/numProc;
 
-        thread1.join();
-        thread2.join();
-        thread3.join();
-        thread4.join();
+        List<Task> tasks = new ArrayList<>();
+        for( int i=0; i < numProc; i++)
+        {
+            int start = startRange + i*chunkSize;
+            int end = (i == numProc - 1) ? endRange : startRange + (i+1)*chunkSize;
+            System.out.println( start + " -- " + end );
+            Task task = new Task(start, end );
+            tasks.add( task );
+        }
+
+        List<Thread> threads = new ArrayList<>();
+        for( Task task : tasks)
+        {
+            Thread thread = new Thread(task);
+            threads.add(thread);
+            thread.start();
+        }
+
+        for(Thread thread : threads )
+        {
+            thread.join();;
+        }
 
         long endTime = System.currentTimeMillis();
 
