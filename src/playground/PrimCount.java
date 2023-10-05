@@ -1,3 +1,5 @@
+package playground;
+
 import java.math.BigInteger;
 import java.util.stream.LongStream;
 
@@ -11,7 +13,7 @@ public class PrimCount
 
         long count =
         LongStream.range(1_000_000L, 2_000_000L)
-                  .parallel()
+                  //.parallel()
                   .mapToObj( BigInteger::valueOf )
                   .filter( bi -> bi.isProbablePrime(1000))
                   .count();
