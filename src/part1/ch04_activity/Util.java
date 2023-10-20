@@ -7,8 +7,9 @@ public class Util
 {
    public static double[][] getRandomMatrix(final int row, final int col)
    {     
-      return IntStream.range(0, row).parallel()
-               .mapToObj( i -> ThreadLocalRandom.current().doubles(col).toArray() )
-               .toArray( double[][]::new );
+      return IntStream.range(0, row)
+                      .parallel()
+                      .mapToObj( i -> ThreadLocalRandom.current().doubles(col).toArray() )
+                      .toArray( double[][]::new );
    }
 }

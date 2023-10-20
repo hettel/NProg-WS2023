@@ -8,12 +8,12 @@ public class PrimCount
     public static void main(String[] args)
     {
 
-        System.out.println("Start serach with streams");
+        System.out.println("Start serach with ");
         long start = System.currentTimeMillis();
 
         long count =
         LongStream.range(1_000_000L, 2_000_000L)
-                  //.parallel()
+                  .parallel()
                   .mapToObj( BigInteger::valueOf )
                   .filter( bi -> bi.isProbablePrime(1000))
                   .count();

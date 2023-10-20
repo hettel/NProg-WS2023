@@ -3,29 +3,36 @@ package playground;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ParallelPrim
 {
     private static class Task implements Runnable
     {
-        private int start, end;
+        private final int start, end;
+        private int result;
 
         Task(int start, int end)
         {
             this.start = start;
             this.end = end;
         }
-        @Override public void run() {
-            int count = 0;
+
+        public int getResult()
+        {
+            return result;
+        }
+
+        @Override public void run()
+        {
+
             for (int i = start; i < end; i++)
             {
                 if(BigInteger.valueOf(i).isProbablePrime(1000) )
                 {
-                    count++;
+                    result++;
                 }
             }
-
-            System.out.println("Anzahl " + count + " von  " + Thread.currentThread().getName() );
         }
     }
 
@@ -33,7 +40,7 @@ public class ParallelPrim
     {
         long startTime = System.currentTimeMillis();
 
-        int numProc = Runtime.getRuntime().availableProcessors();
+        int numProc = 20; // Runtime.getRuntime().availableProcessors();
         int startRange = 1_000_000;
         int endRange = 2_000_000;
 
@@ -57,13 +64,22 @@ public class ParallelPrim
             thread.start();
         }
 
+        TimeUnit.MILLISECONDS.sleep(10);
         for(Thread thread : threads )
         {
-            thread.join();;
+            //thread.join();
         }
+
+        int result = 0;
+        for( Task task : tasks )
+        {
+            result += task.getResult();
+        }
+
 
         long endTime = System.currentTimeMillis();
 
+        System.out.println("Anzahl " + result );
         System.out.println("done " + Thread.currentThread().getName() );
         System.out.println("Dauer " + (endTime - startTime) + "[ms]");
     }

@@ -1,7 +1,9 @@
 package part1.ch04_activity;
 
 
-public class MatrixMultiplication
+import java.util.stream.IntStream;
+
+public class MatrixMultiplication_V2seq
 {
 
    public static void main(String[] args)
@@ -27,16 +29,13 @@ public class MatrixMultiplication
    {
       double[][] C = new double[size][size];
 
-      for (int i = 0; i < size; i++)
-      {
-         for (int j = 0; j < size; j++)
-         {
-            for (int k = 0; k < size; k++)
-            {
-               C[i][j] += A[i][k] * B[k][j];
-            }
-         }
-      }
+      IntStream.range(0, size).forEach( i -> {
+            IntStream.range(0, size).forEach( k -> {
+               IntStream.range(0, size).forEach( j -> {
+                  C[i][j] += A[i][k] * B[k][j];
+            });
+         } );
+      } );
 
       return C;
    }
