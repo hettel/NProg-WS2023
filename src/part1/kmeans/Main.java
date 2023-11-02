@@ -7,7 +7,7 @@ public class Main
 {
    public static void main(String[] args) throws Exception
    {
-      final String inputFileName = "pic1.jpg";
+      final String inputFileName = "moi.jpg";
       final String outputFileName = "reduced_" + inputFileName;
       final int k = 3;
       
