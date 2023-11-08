@@ -7,9 +7,9 @@ public class Main
 {
    public static void main(String[] args) throws Exception
    {
-      final String inputFileName = "moi.jpg";
+      final String inputFileName = "Schmetterling.jpg";
       final String outputFileName = "reduced_" + inputFileName;
-      final int k = 3;
+      final int k = 5;
       
       System.out.println("Color k-Means");
       System.out.println("Load image: " + inputFileName);

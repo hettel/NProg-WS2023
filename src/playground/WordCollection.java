@@ -12,7 +12,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -51,7 +51,10 @@ public class WordCollection
         @Override
         public Set<Characteristics> characteristics()
         {
-            return Set.of( Characteristics.IDENTITY_FINISH, Characteristics.CONCURRENT );
+            // A concurrent reduction should only be applied if the collector has the
+            // Collector.Characteristics.UNORDERED characteristics or if the originating
+            // data is unordered.
+            return Set.of( Characteristics.IDENTITY_FINISH, Characteristics.UNORDERED );
         }
     }
 
@@ -67,10 +70,11 @@ public class WordCollection
 
         List<String> words17 = Arrays.stream( words )
                 .parallel()
-                .filter( s -> s.length() == 17  )
+                .filter( s -> s.length() >= 7  )
                 .collect( new LinkedListCollector<String>() );
 
         System.out.println( words17.getClass().getCanonicalName() );
+        System.out.println( words17.size() );
 
     }
 }
