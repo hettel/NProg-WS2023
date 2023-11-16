@@ -46,12 +46,16 @@ public class Example_02
       Future<Long> futureOfTask2 = executor.submit(task2);
       Future<Long> futureOfTask3 = executor.submit(task3);
       Future<Long> futureOfTask4 = executor.submit(task4);
-            
+
+      System.out.println( futureOfTask1.isDone() );
+
       // wait until the results are available
       long count = futureOfTask1.get() +  futureOfTask2.get() 
                   + futureOfTask3.get() +futureOfTask4.get();
       
       System.out.println( futureOfTask1.isDone() );
+
+      System.out.println("Anzahl " + count );
       
       executor.shutdown();
       System.out.println("main done");

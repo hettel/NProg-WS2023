@@ -1,4 +1,4 @@
-package part1.ch14_activity;
+package playground.completion_service;
 
 public class SequentialSearch
 {
