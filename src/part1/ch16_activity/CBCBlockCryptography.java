@@ -49,8 +49,8 @@ public class CBCBlockCryptography
       List<Integer> inputData = Util.readFromFileAsByte4(inputFile);
 
       List<Integer> encryptedInputData = new ArrayList<>();
-      final int initVector = InitVector;
-      int salt = initVector;
+     
+      int salt = InitVector;
       for (Integer item : inputData)
       {
          // XOR operation
@@ -71,8 +71,8 @@ public class CBCBlockCryptography
       List<Integer> encryptedInputData = Util.readFromFileAsByte4(inputFile);
 
       List<Integer> decryptedOutputData = new ArrayList<>();
-      final int initVector = InitVector;
-      int salt = initVector;
+
+      int salt = InitVector;
       for (Integer item : encryptedInputData)
       {
          // decrypt using a simple Caesar cipher (shift 42)

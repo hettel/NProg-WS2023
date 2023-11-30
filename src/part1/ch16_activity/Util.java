@@ -11,10 +11,10 @@ import java.util.List;
 
 public class Util
 {
-   public static List<Integer> readFromFileAsByte4(String filname) throws IOException
+   public static List<Integer> readFromFileAsByte4(String filename) throws IOException
    {
       List<Integer> inputData = new ArrayList<>();
-      try (InputStream input = new FileInputStream(filname))
+      try (InputStream input = new FileInputStream(filename))
       {
          // read buffer (reading an int, 4 bytes)
          byte[] block = new byte[4];  
@@ -34,9 +34,9 @@ public class Util
       return inputData;
    }
    
-   public static void writeToFile(String filname, List<Integer> byte4List) throws IOException
+   public static void writeToFile(String filename, List<Integer> byte4List) throws IOException
    {
-      try (OutputStream output = new FileOutputStream(filname))
+      try (OutputStream output = new FileOutputStream(filename))
       {
          for (Integer value : byte4List)  
          {
