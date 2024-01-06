@@ -9,30 +9,29 @@ public class Demo07
   {
     int[] array = new int[42];
     AtomicBoolean ready = new AtomicBoolean(false);
-   
+
     // Caution: lambda with side effects
     Runnable writer = () -> {
-      for(int i=0; i < array.length; i++)
-      {
+      for ( int i = 0; i < array.length; i++ ) {
         array[i] = i;
       }
-      
+
       ready.set(true);
     };
-    
+
     // Caution: lambda with side effects
     Runnable reader = () -> {
-      
-      while( ready.get() == false ) {;}
-      
-      for(int i=0; i < array.length; i++)
-      {
-        System.out.println( array[i] );
+
+      while ( ready.get() == false ) {
+        ;
+      }
+
+      for ( int i = 0; i < array.length; i++ ) {
+        System.out.println(array[i]);
       }
     };
-    
-    new Thread( writer ).start();
-    new Thread( reader ).start();
-  }
 
+    new Thread(writer).start();
+    new Thread(reader).start();
+  }
 }

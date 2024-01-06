@@ -1,4 +1,4 @@
-package playground;
+package playground.example;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

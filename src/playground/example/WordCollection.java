@@ -1,4 +1,4 @@
-package playground;
+package playground.example;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

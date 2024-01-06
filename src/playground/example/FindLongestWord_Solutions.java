@@ -1,4 +1,4 @@
-package playground;
+package playground.example;
 
 import java.awt.*;
 import java.io.IOException;

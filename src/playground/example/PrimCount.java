@@ -1,4 +1,4 @@
-package playground;
+package playground.example;
 
 import java.math.BigInteger;
 import java.util.stream.LongStream;

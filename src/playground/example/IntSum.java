@@ -1,4 +1,4 @@
-package playground;
+package playground.example;
 
 import java.util.OptionalInt;
 import java.util.concurrent.ThreadLocalRandom;
