@@ -1,14 +1,18 @@
 package playground.basic_sync_examples;
 
+import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Bsp06_CyclicBarrier_KleinsteZahl
 {
     static AtomicInteger scratch = new AtomicInteger(0);
+
+    static AtomicBoolean found = new AtomicBoolean(false);
 
     private static class Task1 implements  Runnable
     {
@@ -30,6 +34,8 @@ public class Bsp06_CyclicBarrier_KleinsteZahl
                 while(true) {
                     barrier.await();
 
+                    // Task 2 sucht nächste Zahl
+
                     barrier.await();
 
                     while ( liste[index] < scratch.get() ) {
@@ -37,12 +43,17 @@ public class Bsp06_CyclicBarrier_KleinsteZahl
                     }
 
                     if ( liste[index] == scratch.get() ) {
-                        System.out.println("Found " + liste[index] + " by Task1");
-                        break;
+                        found.set(true);
                     } else {
                         scratch.set(liste[index]);
                     }
 
+                    barrier.await();
+                    if( found.get() )
+                    {
+                        System.out.println("Task 1 => " + liste[index]  +  " at " + index );
+                        break;
+                    }
                 }
 
             } catch (InterruptedException | BrokenBarrierException e) {
@@ -75,13 +86,21 @@ public class Bsp06_CyclicBarrier_KleinsteZahl
                     }
 
                     if ( liste[index] == scratch.get() ) {
-                        System.out.println("Found " + liste[index] + " Task2");
-                        break;
+                        found.set(true);
                     } else {
                         scratch.set(liste[index]);
                     }
 
                     barrier.await();
+
+                    // Task 1 sucht nächste Zahl
+
+                    barrier.await();
+                    if( found.get() )
+                    {
+                        System.out.println("Task 2 => " + liste[index] +  " at " + index );
+                        break;
+                    }
                 }
 
             } catch (InterruptedException | BrokenBarrierException e) {
@@ -93,9 +112,20 @@ public class Bsp06_CyclicBarrier_KleinsteZahl
     public static void main(String[] args) throws InterruptedException
     {
 
-        int[] liste1 = {2,23,24,31,37,42,45,60};
-        int[] liste2 = {3,17,19,27,39,42,46,70};
+        int[] liste1 = new int[100_000];
+        int[] liste2 = new int[100_000];
 
+        // Initialisiere Arrays mit Zufallszahlen
+        Arrays.parallelSetAll( liste1, i -> ThreadLocalRandom.current().nextInt( ) );
+        Arrays.parallelSetAll( liste2, i -> ThreadLocalRandom.current().nextInt( ) );
+
+        // Stelle sicher, dass mindestens eine gemeinsame Zahl existiert
+        liste1[0] = Integer.MAX_VALUE;
+        liste2[0] = Integer.MAX_VALUE;
+
+        // Sortiere Arrays
+        Arrays.parallelSort( liste1 );
+        Arrays.parallelSort( liste2 );
 
         CyclicBarrier barrier = new CyclicBarrier(2);
 
@@ -103,6 +133,5 @@ public class Bsp06_CyclicBarrier_KleinsteZahl
         new Thread( new Task2( liste2, barrier) ).start();
 
         System.out.println("Main done");
-
     }
 }
