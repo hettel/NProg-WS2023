@@ -111,7 +111,6 @@ public class Bsp06_CyclicBarrier_KleinsteZahl
 
     public static void main(String[] args) throws InterruptedException
     {
-
         int[] liste1 = new int[100_000];
         int[] liste2 = new int[100_000];
 
@@ -119,7 +118,7 @@ public class Bsp06_CyclicBarrier_KleinsteZahl
         Arrays.parallelSetAll( liste1, i -> ThreadLocalRandom.current().nextInt( ) );
         Arrays.parallelSetAll( liste2, i -> ThreadLocalRandom.current().nextInt( ) );
 
-        // Stelle sicher, dass mindestens eine gemeinsame Zahl existiert
+        // Stelle sicher, dass mindestens eine Zahl in beiden Arrays vorkommt
         liste1[0] = Integer.MAX_VALUE;
         liste2[0] = Integer.MAX_VALUE;
 
